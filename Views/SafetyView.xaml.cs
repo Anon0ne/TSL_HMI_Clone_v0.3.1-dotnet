@@ -1,0 +1,1 @@
+using System.Windows.Controls; using TSL.HMI.Models; namespace TSL.HMI.Views; public partial class SafetyView:UserControl{public SafetyView(MachineDefinition m){InitializeComponent();Grid.ItemsSource=m.Safety.ToList();}}

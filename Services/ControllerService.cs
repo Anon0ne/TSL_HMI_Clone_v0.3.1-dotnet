@@ -1,0 +1,4 @@
+namespace TSL.HMI.Services;
+public interface IControllerService { bool IsConnected {get;} string Mode {get;} Task<object?> ReadAsync(string controller,string variable,CancellationToken ct=default); Task WriteAsync(string controller,string variable,object value,CancellationToken ct=default); }
+public sealed class OfflineControllerService : IControllerService { public bool IsConnected=>false; public string Mode=>"OFFLINE / WRITE LOCKED"; public Task<object?> ReadAsync(string c,string v,CancellationToken ct=default)=>Task.FromResult<object?>(null); public Task WriteAsync(string c,string v,object value,CancellationToken ct=default)=>throw new InvalidOperationException("Controller writes are disabled in this validation build."); }
+// ItsCtrlControllerService will be enabled after the exact 32-bit COM signatures are validated on a console.

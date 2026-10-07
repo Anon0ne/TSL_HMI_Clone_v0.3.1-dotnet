@@ -1,0 +1,1 @@
+using System.Windows; namespace TSL.HMI; public partial class App : Application { }

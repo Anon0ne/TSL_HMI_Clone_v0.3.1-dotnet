@@ -1,0 +1,1 @@
+using System.Windows.Controls; using TSL.HMI.Models; namespace TSL.HMI.Views; public partial class OverviewView:UserControl{public OverviewView(MachineDefinition m){InitializeComponent();SystemValue.Text=m.SystemNumber;TagsValue.Text=m.Tags.Count.ToString("N0");IoValue.Text=m.Io.Count.ToString("N0");SafetyValue.Text=m.Safety.Count().ToString("N0");}}

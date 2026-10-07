@@ -1,0 +1,4 @@
+namespace TSL.HMI.Models;
+public sealed record TagDefinition(string Controller,string Section,string Description,string Variable,string DataType,string Min,string Max);
+public sealed record IoPoint(string Controller,string Name,string Description,string Module,string Channel,string Direction);
+public sealed class MachineDefinition { public string SystemNumber {get;set;}="Unknown"; public string RootPath {get;set;}=""; public List<TagDefinition> Tags {get;}=[]; public List<IoPoint> Io {get;}=[]; public Dictionary<string,string> Settings {get;}=new(StringComparer.OrdinalIgnoreCase); public IEnumerable<IoPoint> Safety => Io.Where(x => {var s=(x.Name+" "+x.Description).ToLowerInvariant(); return new[]{"safety","door","e-stop","estop","guard","lock pin","lock block"}.Any(s.Contains);}); }

@@ -1,0 +1,1 @@
+using System.Windows.Controls; using TSL.HMI.Models; namespace TSL.HMI.Views; public partial class FormerView:UserControl{public FormerView(MachineDefinition m){InitializeComponent();TagCount.Text=m.Tags.Count(x=>(x.Controller+" "+x.Section).Contains("former",StringComparison.OrdinalIgnoreCase)).ToString("N0");}}

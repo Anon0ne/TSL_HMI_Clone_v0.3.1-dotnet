@@ -1,0 +1,9 @@
+using System.IO;
+using System.Windows; using TSL.HMI.Models; using TSL.HMI.Services; using TSL.HMI.Views;
+namespace TSL.HMI;
+public partial class MainWindow:Window { MachineDefinition _machine=new(); readonly IControllerService _controller=new OfflineControllerService();
+ public MainWindow(){InitializeComponent(); Loaded+=(_,_)=>InitializeMachine();}
+ void InitializeMachine(){ var args=Environment.GetCommandLineArgs(); var root=args.Skip(1).FirstOrDefault(Directory.Exists)??(@"C:\ITS"); if(!Directory.Exists(root)){StatusText.Text="C:\\ITS not found. Pass an offline ITS directory as the first argument."; ShowOverview(); return;} try{_machine=new MachineLoader().Load(root); MachineText.Text=$"SYSTEM {_machine.SystemNumber}"; ModeText.Text=_controller.Mode; StatusText.Text=$"{_machine.Tags.Count:N0} tags • {_machine.Io.Count:N0} I/O • {_machine.Safety.Count():N0} safety-related points • {root}"; ShowOverview();}catch(Exception ex){StatusText.Text=ex.Message;}}
+ void ShowOverview(){PageTitle.Text="Machine Overview";PageHost.Content=new OverviewView(_machine);} void Overview_Click(object s,RoutedEventArgs e)=>ShowOverview();
+ void Former_Click(object s,RoutedEventArgs e){PageTitle.Text="Former";PageHost.Content=new FormerView(_machine);} void Heat_Click(object s,RoutedEventArgs e){PageTitle.Text="Heat";PageHost.Content=new PlaceholderView("Heat","Heater zones, setpoints, actual temperatures and status will be reconstructed here.");} void Trim_Click(object s,RoutedEventArgs e){PageTitle.Text="Trim";PageHost.Content=new PlaceholderView("Trim Press","Trim index, platen, ejector, canopy and lubrication status.");} void Safety_Click(object s,RoutedEventArgs e){PageTitle.Text="Safety Circuit";PageHost.Content=new SafetyView(_machine);} void Diagnostics_Click(object s,RoutedEventArgs e){PageTitle.Text="Diagnostics";PageHost.Content=new DiagnosticsView(_machine);}
+}
